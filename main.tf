@@ -13,20 +13,20 @@ resource "random_id" "ose_name" {
 }
 
 module "vlan" {
-  source     = "modules/network/network_vlan"
+  source     = "./modules/network/network_vlan"
   datacenter = "${var.datacenter}"
   vlan_count = "${var.vlan_count}"
 }
 
 module "publicsg" {
-  source              = "modules/infrastructure/node_sg"
+  source              = "./modules/infrastructure/node_sg"
   random_id           = "${random_id.ose_name.hex }"
   node_sg_name        = "ose_node_pub_sg"
   node_sg_description = "Public security group"
 }
 
 module "privatesg" {
-  source              = "modules/infrastructure/node_sg"
+  source              = "./modules/infrastructure/node_sg"
   random_id           = "${random_id.ose_name.hex }"
   node_sg_name        = "ose_node_prv_sg"
   node_sg_description = "Private security group"
@@ -36,7 +36,7 @@ module "privatesg" {
 # Create vm cluster for bastion
 #####################################################
 module "bastion" {
-  source          = "modules/bastion/bastion_node"
+  source          = "./modules/bastion/bastion_node"
   random_id       = "${random_id.ose_name.hex}"
   datacenter      = "${var.datacenter}"
   domain          = "${var.vm_domain}"
@@ -54,7 +54,7 @@ module "bastion" {
 # Create vm cluster for master
 #####################################################
 module "masternode" {
-  source                 = "modules/infrastructure/master_node"
+  source                 = "./modules/infrastructure/master_node"
   random_id              = "${random_id.ose_name.hex}"
   datacenter             = "${var.datacenter}"
   domain                 = "${var.vm_domain}"
@@ -72,7 +72,7 @@ module "masternode" {
 # Create vm cluster for infra node
 #####################################################
 module "infranode" {
-  source                = "modules/infrastructure/infra_node"
+  source                = "./modules/infrastructure/infra_node"
   random_id             = "${random_id.ose_name.hex}"
   datacenter            = "${var.datacenter}"
   domain                = "${var.vm_domain}"
@@ -92,7 +92,7 @@ module "infranode" {
 # Create vm cluster for app
 #####################################################
 module "appnode" {
-  source              = "modules/infrastructure/app_node"
+  source              = "./modules/infrastructure/app_node"
   random_id           = "${random_id.ose_name.hex}"
   datacenter          = "${var.datacenter}"
   domain              = "${var.vm_domain}"
@@ -112,7 +112,7 @@ module "appnode" {
 # Create vm cluster for storage
 #####################################################
 module "storagenode" {
-  source                  = "modules/infrastructure/storage_node"
+  source                  = "./modules/infrastructure/storage_node"
   random_id               = "${random_id.ose_name.hex}"
   datacenter              = "${var.datacenter}"
   domain                  = "${var.vm_domain}"
@@ -129,7 +129,7 @@ module "storagenode" {
 }
 
 module "inventory" {
-  source             = "modules/inventory"
+  source             = "./modules/inventory"
   domain             = "${var.vm_domain}"
   bastion_private_ip = "${module.bastion.bastion_private_ip}"
   master_private_ip  = "${module.masternode.master_private_ip}"
@@ -154,7 +154,7 @@ module "inventory" {
 # Deploy openshift
 #####################################################
 module "openshift" {
-  source                  = "modules/openshift"
+  source                  = "./modules/openshift"
   bastion_ip_address      = "${module.bastion.bastion_ip_address}"
   bastion_private_ssh_key = "${var.private_ssh_key}"
   master_private_ip       = "${module.masternode.master_private_ip}"
@@ -169,7 +169,7 @@ module "openshift" {
 }
 
 module "rhn_register" {
-  source                  = "modules/infrastructure/rhn_register"
+  source                  = "./modules/infrastructure/rhn_register"
   master_ip_address       = "${module.masternode.master_public_ip}"
   master_private_ssh_key  = "${var.private_ssh_key}"
   rhn_username            = "${var.rhn_username}"
