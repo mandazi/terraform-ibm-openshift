@@ -3,52 +3,52 @@ variable "bastion_private_ip" {
 }
 
 variable "master_private_ip" {
-  type = "list"
+  type = list(string)
 
 }
 
 variable "master_public_ip" {
-  type = "list"
+  type = list(string)
 
 }
 
 variable "infra_private_ip" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "infra_public_ip" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "app_private_ip" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "storage_private_ip" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "master_host" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "infra_host" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "app_host" {
-   type = "list"
+   type = list(string)
 
 }
 
 variable "storage_host" {
-   type = "list"
+   type = list(string)
 
 }
 
